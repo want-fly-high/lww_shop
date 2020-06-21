@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmpay.lww.dao.IMenuDao" >
+
+
+    <sql id="Base_Column_List" >
+        id, pid, menu_name, type, munu_value, path, redirect, status, is_use
+        , create_date, update_date
+    </sql>
+    <!-- add -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select id,pid from menu
+    </select>
+    <update id="updateById" parameterType="com.cmpay.lww.entity.MenuDO">
+        update menu
+        <set>
+          <if test="pid!=null">
+              pid=#{pid,jdbcType=BIGINT},
+          </if>
+            <if test="menuName != null" >
+              menu_name= #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                type=#{type,jdbcType=INTEGER},
+            </if>
+            <if test="munuValue != null" >
+                munu_value=#{munuValue,jdbcType=VARCHAR},
+            </if>
+            <if test="path != null" >
+                path=#{path,jdbcType=VARCHAR},
+            </if>
+            <if test="redirect != null" >
+                redirect=#{redirect,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status=#{status,jdbcType=INTEGER},
+            </if>
+            <if test="isUse != null" >
+                is_use=#{isUse,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null" >
+                create_date=#{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+                update_date=#{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+         where id=#{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteBatch" parameterType="list">
+        update menu set is_use = 1
+        where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")" >
+            #{item}
+        </foreach>
+    </update>
+</mapper>

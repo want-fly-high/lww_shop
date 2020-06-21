@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'http://172.16.50.223:8081/repository/maven-public/'
+        }
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'shop'
+include 'app'
+include 'app:demo-manager-app'
+include 'constant'
+include 'constant:demo-constant'
+include 'common'
+include 'common:demo-auth'
+include 'interface'
+include 'interface:demo-manager-interface'
+include 'service'
+include 'service:demo-service'
+include 'app'
+

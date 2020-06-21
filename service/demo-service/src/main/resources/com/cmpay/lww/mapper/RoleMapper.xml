@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmpay.lww.dao.IRoleDao" >
+
+    <resultMap id="BaseResultMap" type="com.cmpay.lww.entity.RoleDO" >
+        <result column="id" property="id" jdbcType="BIGINT" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="is_use" property="isUse" jdbcType="INTEGER" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.cmpay.lww.entity.RoleDO" >
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="roleName != null" >
+                role_name,
+            </if>
+            <if test="roleCode != null" >
+                role_code,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="isUse != null" >
+                is_use,
+            </if>
+            <if test="createDate != null" >
+                create_date,
+            </if>
+            <if test="updateDate != null" >
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="roleName != null" >
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleCode != null" >
+                #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isUse != null" >
+                #{isUse,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.lww.entity.RoleDO" >
+        select 
+        <include refid="Base_Column_List" />
+        from role
+        <where >
+            <if test="id != null" >
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="roleName != null" >
+                and role_name = #{roleName,jdbcType=VARCHAR}
+            </if>
+            <if test="roleCode != null" >
+                and role_code = #{roleCode,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null" >
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="isUse != null" >
+                and is_use = #{isUse,jdbcType=INTEGER}
+            </if>
+            <if test="createDate != null" >
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null" >
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>
