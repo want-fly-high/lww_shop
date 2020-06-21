@@ -11,6 +11,11 @@ import com.cmpay.lww.entity.RoleDO;
 import com.cmpay.lww.entity.RoleDOKey;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface IRoleDao extends BaseDao<RoleDO, RoleDOKey> {
+    int updateById(RoleDO roleDO);
+
+    int deleteBatch(List<Long> list);
 }

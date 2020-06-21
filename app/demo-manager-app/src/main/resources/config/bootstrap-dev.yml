@@ -29,6 +29,12 @@ lemon:
       password: 'foobared'
       cluster:
         nodes: 134.175.174.116:7000,134.175.174.116:7001,134.175.174.116:7002,134.175.174.116:7003,134.175.174.116:7004,134.175.174.116:7005
+    id-infos:
+      TEST_IDGEN:
+        name: LWW_ROLEMENU_ID
+        maxValue: 10000
+        minValue: 1
+        delta: 30
   cache:
     redis:
       password: 'foobared'

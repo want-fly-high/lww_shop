@@ -6,5 +6,36 @@
     <sql id="Base_Column_List" >
         id, role_name, role_code, remark, is_use, create_date, update_date
     </sql>
+    <update id="updateById" parameterType="com.cmpay.lww.entity.RoleDO">
+        update role
+        <set>
+            <if test="roleName != null" >
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleCode != null" >
+                role_code = #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isUse != null" >
+                is_use = #{isUse,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null" >
+               create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
+    <update id="deleteBatch" parameterType="list">
+        update role set is_use = 1
+        where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")" >
+            #{item}
+        </foreach>
+    </update>
 </mapper>

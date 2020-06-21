@@ -1,23 +1,33 @@
 package com.cmpay.lww.service.impl;
 
 import com.cmpay.lemon.common.utils.BeanUtils;
+import com.cmpay.lemon.framework.utils.IdGenUtils;
+import com.cmpay.lemon.framework.utils.LemonUtils;
 import com.cmpay.lww.bo.MenuInfoBO;
+import com.cmpay.lww.bo.RoleMenuInsertBO;
 import com.cmpay.lww.dao.IMenuDao;
+import com.cmpay.lww.dao.IRoleMenuDao;
 import com.cmpay.lww.entity.MenuDO;
+import com.cmpay.lww.entity.RoleMenuDO;
 import com.cmpay.lww.service.MenuService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
- *  菜单 服务shi
+ *  菜单 服务实现类
  */
 @Service
 public class MenuServiceImpl implements MenuService {
     @Resource
     private IMenuDao iMenuDao;
+    @Resource
+    private IRoleMenuDao iRoleMenuDao;
     @Override
     public List<MenuDO> selectByCondition() {
         return iMenuDao.selectByCondition();
@@ -115,5 +125,47 @@ public List<MenuInfoBO> queryAllMenu(){
             }
         }
         return menuInfoNode;
+    }
+
+    //给角色分配菜单权限（批量）
+    @Override
+    public void saveRoleMenuRalation(RoleMenuInsertBO insertBO){
+        //初始化插入List
+        List<RoleMenuDO> roleMenuList = new ArrayList<>();
+        for (int i=0; i<insertBO.getMenuId().length; i++){
+            //对RoleMenuDO进行封装
+            RoleMenuDO roleMenuDO = new RoleMenuDO();
+            roleMenuDO.setId(new Random().nextLong());
+            roleMenuDO.setIsUse(0);
+            roleMenuDO.setRoleId(insertBO.getRoleId());
+            roleMenuDO.setMenuId(insertBO.getMenuId()[i]);
+            roleMenuDO.setCreateDate(LocalDateTime.now());
+            roleMenuDO.setUpdateDate(LocalDateTime.now());
+            System.out.println(roleMenuDO);
+            roleMenuList.add(roleMenuDO);
+        }
+        //批量增加根据list
+        iRoleMenuDao.batchInsert(roleMenuList);
+    }
+
+    /**
+     * 插入菜单
+     * @param menuDO
+     */
+    @Override
+    public boolean saveMenu(MenuDO menuDO) {
+        int insert = iMenuDao.insert(menuDO);
+        return insert>0?true:false;
+    }
+
+    /**
+     * 根据id修改菜单
+     * @param menuDO
+     * @return
+     */
+    @Override
+    public boolean updateMenu(MenuDO menuDO) {
+        int update = iMenuDao.updateById(menuDO);
+        return update>0?true:false;
     }
 }

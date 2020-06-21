@@ -4,4 +4,5 @@
     <sql id="Base_Column_List" >
         id, user_id, role_id, is_use, create_date, update_date
     </sql>
+
 </mapper>

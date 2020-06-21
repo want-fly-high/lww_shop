@@ -11,6 +11,18 @@ import java.time.LocalDateTime;
 
 @DataObject
 public class RoleMenuDO extends BaseDO {
+    @Override
+    public String toString() {
+        return "RoleMenuDO{" +
+                "id=" + id +
+                ", roleId=" + roleId +
+                ", menuId=" + menuId +
+                ", isUse=" + isUse +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
+
     /**
      * @Fields id 菜单角色id
      */

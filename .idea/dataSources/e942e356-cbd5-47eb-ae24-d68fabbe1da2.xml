@@ -863,8 +863,8 @@
     <table id="220" parent="16" name="menu"/>
     <table id="221" parent="16" name="role"/>
     <table id="222" parent="16" name="role_menu"/>
-    <table id="223" parent="16" name="user"/>
-    <table id="224" parent="16" name="user_role"/>
+    <table id="223" parent="16" name="user_role"/>
+    <table id="224" parent="16" name="users"/>
     <column id="225" parent="220" name="id">
       <Position>1</Position>
       <Comment>权限id</Comment>
@@ -977,6 +977,7 @@
       <Comment>是否被删除,0未删除 1已删除</Comment>
       <DataType>int(1) unsigned|0s</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="242" parent="221" name="create_date">
@@ -1045,38 +1046,37 @@
     </key>
     <column id="252" parent="223" name="id">
       <Position>1</Position>
+      <Comment>菜单角色id</Comment>
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="253" parent="223" name="user_id">
+      <Position>2</Position>
       <Comment>用户id</Comment>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="223" name="username">
-      <Position>2</Position>
-      <Comment>用户名</Comment>
-      <DataType>varchar(5)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="254" parent="223" name="password">
+    <column id="254" parent="223" name="role_id">
       <Position>3</Position>
-      <Comment>密码</Comment>
-      <DataType>varchar(100)|0s</DataType>
+      <Comment>角色id</Comment>
+      <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="255" parent="223" name="phone">
+    <column id="255" parent="223" name="is_use">
       <Position>4</Position>
-      <Comment>手机号码</Comment>
-      <DataType>char(11)|0s</DataType>
+      <Comment>是否逻辑删除 0未删除,1已删除</Comment>
+      <DataType>int(1) unsigned|0s</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="256" parent="223" name="create_date">
       <Position>5</Position>
       <Comment>创建时间</Comment>
       <DataType>datetime|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="257" parent="223" name="update_date">
@@ -1085,57 +1085,58 @@
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="223" name="is_use">
-      <Position>7</Position>
-      <Comment>是否已进行删除，0未删除 1已删除</Comment>
-      <DataType>int(1)|0s</DataType>
-      <DefaultExpression>0</DefaultExpression>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="259" parent="223" name="PRIMARY">
+    <key id="258" parent="223" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="260" parent="224" name="id">
+    <column id="259" parent="224" name="id">
       <Position>1</Position>
-      <Comment>菜单角色id</Comment>
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="261" parent="224" name="user_id">
-      <Position>2</Position>
       <Comment>用户id</Comment>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="224" name="role_id">
+    <column id="260" parent="224" name="username">
+      <Position>2</Position>
+      <Comment>用户名</Comment>
+      <DataType>varchar(5)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="261" parent="224" name="password">
       <Position>3</Position>
-      <Comment>角色id</Comment>
-      <DataType>bigint(20)|0s</DataType>
+      <Comment>密码</Comment>
+      <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="263" parent="224" name="is_use">
+    <column id="262" parent="224" name="phone">
       <Position>4</Position>
-      <Comment>是否逻辑删除 0未删除,1已删除</Comment>
-      <DataType>int(1) unsigned|0s</DataType>
+      <Comment>手机号码</Comment>
+      <DataType>char(11)|0s</DataType>
       <NotNull>1</NotNull>
-      <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="264" parent="224" name="create_date">
+    <column id="263" parent="224" name="create_date">
       <Position>5</Position>
       <Comment>创建时间</Comment>
       <DataType>datetime|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="224" name="update_date">
+    <column id="264" parent="224" name="update_date">
       <Position>6</Position>
       <Comment>更新时间</Comment>
       <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="265" parent="224" name="is_use">
+      <Position>7</Position>
+      <Comment>是否已进行删除，0未删除 1已删除</Comment>
+      <DataType>int(1)|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <key id="266" parent="224" name="PRIMARY">

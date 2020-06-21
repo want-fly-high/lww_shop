@@ -11,6 +11,11 @@ import com.cmpay.lww.entity.UsersDO;
 import com.cmpay.lww.entity.UsersDOKey;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface IUsersDao extends BaseDao<UsersDO, UsersDOKey> {
+    int updateById(UsersDO usersDO);
+
+    int deleteBatch(List<Long> list);
 }

@@ -1,6 +1,7 @@
 package com.cmpay.lww.service;
 
 import com.cmpay.lww.bo.MenuInfoBO;
+import com.cmpay.lww.bo.RoleMenuInsertBO;
 import com.cmpay.lww.entity.MenuDO;
 
 import java.util.List;
@@ -20,4 +21,12 @@ public interface MenuService {
     //获取全部菜单(递归 层级)
     List<MenuInfoBO> queryAllMenu();
 
+    //为角色添加权限(批量)
+    void saveRoleMenuRalation(RoleMenuInsertBO insertBO);
+
+    //插入菜单
+    boolean saveMenu(MenuDO menuDO);
+
+    //修改菜单 根据id
+    boolean updateMenu(MenuDO menuDO);
 }

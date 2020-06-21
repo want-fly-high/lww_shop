@@ -6,5 +6,11 @@
     <sql id="Base_Column_List" >
         id, role_id, menu_id, is_use, create_date, update_date
     </sql>
-
+    <insert id="batchInsert" parameterType="list">
+        insert into role_menu(<include refid="Base_Column_List" />)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.roleId},#{item.menuId},#{item.isUse},#{item.createDate},#{item.updateDate})
+        </foreach>
+    </insert>
 </mapper>
