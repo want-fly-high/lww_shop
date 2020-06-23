@@ -25,8 +25,11 @@ public interface MenuService {
     void saveRoleMenuRalation(RoleMenuInsertBO insertBO);
 
     //插入菜单
-    boolean saveMenu(MenuDO menuDO);
+    void saveMenu(MenuInfoBO menuInfoBO);
 
     //修改菜单 根据id
-    boolean updateMenu(MenuDO menuDO);
+    void updateMenu(MenuInfoBO menuInfoBO);
+
+
+
 }

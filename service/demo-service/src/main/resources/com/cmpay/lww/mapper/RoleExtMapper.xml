@@ -38,4 +38,10 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="long">
+        select <include refid="Base_Column_List"/>
+        from role
+        where id=#{roleId}
+    </select>
 </mapper>

@@ -3,7 +3,7 @@ package com.cmpay.lww.dto;
 import lombok.Data;
 
 @Data
-public class RoleUpdateDTO {
+public class RoleUpdateReqDTO {
     /**
      * @Fields id 角色id
      */

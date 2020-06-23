@@ -1,20 +1,31 @@
 package com.cmpay.lww.service;
 
-import com.cmpay.lww.bo.RoleInsertBO;
-import com.cmpay.lww.bo.UserInsertBO;
+import com.cmpay.lemon.framework.page.PageInfo;
+import com.cmpay.lww.bo.*;
 import com.cmpay.lww.entity.RoleDO;
 import com.cmpay.lww.entity.UsersDO;
+
+import javax.management.relation.Role;
 
 /**
  * 角色服务类
  */
 public interface RoleService {
     //批量删除
-    boolean deleteBatch(Long[] userIds);
+    void deleteBatch(Long[] userIds);
 
     //增加用户信息
-    boolean saveRole(RoleInsertBO roleInsertBO);
+    void saveRole(RoleInsertBO roleInsertBO);
 
     //修改角色信息
-    boolean updateRole(RoleDO roleDO);
+    void updateRole(RoleInfoBO roleInfoBO);
+
+    //分页查询角色信息
+    PageInfo<RoleDO> selectAllRole(RoleInfoQueryBO queryBO);
+
+    //根据id查询角色信息
+    RoleInfoBO getRoleInfoById(RoleInfoBO roleInfoBO);
+
+    //根据id删除角色
+    void deleteById(Long id);
 }

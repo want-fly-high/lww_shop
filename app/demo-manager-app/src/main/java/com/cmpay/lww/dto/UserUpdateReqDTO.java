@@ -3,7 +3,7 @@ package com.cmpay.lww.dto;
 import lombok.Data;
 
 @Data
-public class UserUpdateDTO {
+public class UserUpdateReqDTO {
     private Long id;
     /**
      * @Fields username 用户名

@@ -36,4 +36,9 @@
             #{item}
         </foreach>
     </update>
+    <select id="selectById" parameterType="long" resultMap="BaseResultMap">
+        select<include refid="Base_Column_List"/>
+        from users
+        where id=#{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

@@ -18,4 +18,6 @@ public interface IUsersDao extends BaseDao<UsersDO, UsersDOKey> {
     int updateById(UsersDO usersDO);
 
     int deleteBatch(List<Long> list);
+
+    UsersDO selectById(Long userId);
 }

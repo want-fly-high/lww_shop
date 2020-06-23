@@ -1,14 +1,23 @@
 package com.cmpay.lww.service.impl;
 
+import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
+import com.cmpay.lemon.framework.page.PageInfo;
+import com.cmpay.lemon.framework.utils.PageUtils;
+import com.cmpay.lww.bo.UserInfoBO;
+import com.cmpay.lww.bo.UserInfoQueryBO;
 import com.cmpay.lww.bo.UserInsertBO;
 import com.cmpay.lww.bo.UserRoleInsertBO;
 import com.cmpay.lww.dao.IUserRoleDao;
 import com.cmpay.lww.dao.IUsersDao;
 import com.cmpay.lww.entity.UserRoleDO;
 import com.cmpay.lww.entity.UsersDO;
+import com.cmpay.lww.enums.MsgEnum;
 import com.cmpay.lww.service.UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -25,11 +34,19 @@ public class UserServiceImpl implements UserService {
     private IUsersDao iUsersDao;
     @Resource
     private IUserRoleDao iUserRoleDao;
+
+    /**
+     * 根据用户id数组批量删除用户
+     * @param userIds
+     */
     @Override
-    public boolean deleteBatch(Long[] userIds) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteBatch(Long[] userIds) {
         List<Long> idList = Arrays.asList(userIds);
         int flag = iUsersDao.deleteBatch(idList);
-        return flag>0?true:false;
+        if (flag<=0){
+            BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
+        }
     }
 
     /***
@@ -50,23 +67,80 @@ public class UserServiceImpl implements UserService {
         return insert>0?true:false;
     }
 
+    /**
+     * 保存用户信息方法
+     * @param userInfoBO
+     */
     @Override
-    public boolean saveUser(UserInsertBO insertBO) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveUser(UserInfoBO userInfoBO) {
         UsersDO usersDO = new UsersDO();
-        BeanUtils.copy(usersDO,insertBO);
+        BeanUtils.copy(usersDO,userInfoBO);
         usersDO.setId(new Random().nextLong());
         usersDO.setCreateDate(LocalDateTime.now());
         usersDO.setUpdateDate(LocalDateTime.now());
         usersDO.setIsUse(0);
         int insert = iUsersDao.insert(usersDO);
-        return insert>0?true:false;
+        if (insert != 1){
+            BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
+        }
+
     }
 
+    /**
+     * 根据id更新用户
+     * @param userInfoBO
+     */
     @Override
-    public boolean updateUser(UsersDO usersDO) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateUser(UserInfoBO userInfoBO) {
+        //需要进行加密
+        UsersDO usersDO = new UsersDO();
+        BeanUtils.copyProperties(usersDO, userInfoBO);
         usersDO.setUpdateDate(LocalDateTime.now());
         int update = iUsersDao.updateById(usersDO);
-        return update>0?true:false;
+        if(update != 1) {
+            BusinessException.throwBusinessException(MsgEnum.DB_UPDATE_FAILED);
+        }
+    }
+
+    /**
+     *分页查询用户
+     */
+    @Override
+    public PageInfo<UsersDO> selectAllUser(UserInfoQueryBO queryBO) {
+        UsersDO usersDO = new UsersDO();
+        BeanUtils.copy(usersDO, queryBO);
+        return PageUtils.pageQueryWithCount(queryBO.getPageNum(), queryBO.getPageSize(), ()->iUsersDao.find(usersDO));
+    }
+
+    /**
+     * 根据id查询用户信息
+     * @param userInfoBO
+     * @return
+     */
+    @Override
+    public UserInfoBO getUserInfo(UserInfoBO userInfoBO) {
+        UsersDO usersDO = iUsersDao.selectById(userInfoBO.getId());
+        BeanUtils.copyProperties(userInfoBO,usersDO);
+        return userInfoBO;
+    }
+
+    /**
+     * 根据id删除用户
+     * @param userId
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void delete(Long userId) {
+        UsersDO usersDO = new UsersDO();
+        usersDO.setId(userId);
+        usersDO.setIsUse(1);
+        int res = iUsersDao.updateById(usersDO);
+        if (res != 1) {
+            BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
+        }
+
     }
 
 }

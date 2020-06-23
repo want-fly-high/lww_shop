@@ -1,5 +1,6 @@
 package com.cmpay.lww.service.impl;
 
+import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
 import com.cmpay.lemon.framework.utils.IdGenUtils;
 import com.cmpay.lemon.framework.utils.LemonUtils;
@@ -9,8 +10,11 @@ import com.cmpay.lww.dao.IMenuDao;
 import com.cmpay.lww.dao.IRoleMenuDao;
 import com.cmpay.lww.entity.MenuDO;
 import com.cmpay.lww.entity.RoleMenuDO;
+import com.cmpay.lww.enums.MsgEnum;
 import com.cmpay.lww.service.MenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -45,7 +49,12 @@ public class MenuServiceImpl implements MenuService {
         iMenuDao.deleteBatch(idList);
     }
 
-    //2.根据当前菜单id，查询菜单中的子菜单，装入list
+
+    /**
+     * 2.根据当前菜单id，查询菜单中的子菜单，装入list
+     * @param id
+     * @param idList
+     */
     private void selectMenuChildById(Long id, List<Long> idList) {
         MenuDO menuDO = new MenuDO();
         menuDO.setPid(id);
@@ -127,8 +136,12 @@ public List<MenuInfoBO> queryAllMenu(){
         return menuInfoNode;
     }
 
-    //给角色分配菜单权限（批量）
+    /**
+     * 给角色分配菜单权限（批量）
+     * @param insertBO
+     */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void saveRoleMenuRalation(RoleMenuInsertBO insertBO){
         //初始化插入List
         List<RoleMenuDO> roleMenuList = new ArrayList<>();
@@ -150,22 +163,36 @@ public List<MenuInfoBO> queryAllMenu(){
 
     /**
      * 插入菜单
-     * @param menuDO
+     * @param menuInfoBO
      */
     @Override
-    public boolean saveMenu(MenuDO menuDO) {
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    public void saveMenu(MenuInfoBO menuInfoBO) {
+        MenuDO menuDO = new MenuDO();
+        BeanUtils.copyProperties(menuDO, menuInfoBO);
+        menuDO.setId(new Random().nextLong());
+        menuDO.setCreateDate(LocalDateTime.now());
+        menuDO.setUpdateDate(LocalDateTime.now());
         int insert = iMenuDao.insert(menuDO);
-        return insert>0?true:false;
+        if (insert != 1){
+            BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
+        }
     }
 
     /**
      * 根据id修改菜单
-     * @param menuDO
+     * @param menuInfoBO
      * @return
      */
     @Override
-    public boolean updateMenu(MenuDO menuDO) {
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    public void updateMenu(MenuInfoBO menuInfoBO) {
+        MenuDO menuDO = new MenuDO();
+        BeanUtils.copyProperties(menuDO, menuInfoBO);
+        menuDO.setUpdateDate(LocalDateTime.now());
         int update = iMenuDao.updateById(menuDO);
-        return update>0?true:false;
+        if (update != 1){
+            BusinessException.throwBusinessException(MsgEnum.DB_UPDATE_FAILED);
+        }
     }
 }
