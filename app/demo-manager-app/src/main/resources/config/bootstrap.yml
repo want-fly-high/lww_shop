@@ -56,7 +56,7 @@ logging:
   config: classpath:config/logback-spring.xml
   level:
     #org.activiti.engine.impl.persistence.entity: debug
-    com.hisun.lemon.framework.dao: ${lemon.sql.level:DEBUG}
+    com.cmpay.lww.dao: ${lemon.sql.level:DEBUG}
     com.cmpay.bui: DEBUG
 
 endpoints:
@@ -89,14 +89,14 @@ lemon:
       principalNameExpression: username
     #认证地址
     authentication:
-      loginPathPrefix: /v1/bui/login              #默认 /security/login
+      loginPathPrefix: /user/login                #默认 /security/login
       refreshPath: /v1/bui/refresh                #默认 /security/refresh
       logoutPath: /v1/bui/logout                  #默认 /security/logout
     authorizeRequests:
       #配置不进行认证检查的交易请求url
       permitAll:
         - /upms/v1/captcha/getCaptcha
-        - /user/info
+        - /**
   #Multiple dataSources
   dataSources:
     primary:

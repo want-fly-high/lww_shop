@@ -5,6 +5,7 @@ import com.cmpay.lemon.framework.annotation.QueryBody;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
 import com.cmpay.lemon.framework.page.PageInfo;
+import com.cmpay.lemon.framework.utils.IdGenUtils;
 import com.cmpay.lww.bo.UserInfoBO;
 import com.cmpay.lww.bo.UserInfoQueryBO;
 import com.cmpay.lww.bo.UserRoleInsertBO;
@@ -30,12 +31,14 @@ public class UserController {
 
     /**
      * 为用户分配角色
-     * @param insertBO
+     * @param userRoleAddReqDTO
      * @return
      */
     @PostMapping("/testSaveUserRole")
-    public DefaultRspDTO<NoBody> testSaveUserRole(@RequestBody UserRoleInsertBO insertBO){
-        userService.saveUserRoleRalation(insertBO);
+    public DefaultRspDTO<NoBody> testSaveUserRole(@RequestBody UserRoleAddReqDTO userRoleAddReqDTO){
+        UserRoleInsertBO userRoleInsertBO = new UserRoleInsertBO();
+        BeanUtils.copyProperties(userRoleInsertBO, userRoleAddReqDTO);
+        userService.saveUserRoleRalation(userRoleInsertBO);
         return DefaultRspDTO.newSuccessInstance();
     }
 
@@ -139,5 +142,9 @@ public class UserController {
         return DefaultRspDTO.newSuccessInstance(userInfoDTO);
     }
 
-    //根据用户获取角色信息
+    @GetMapping("/testId}")
+    public String  testId() {
+        return IdGenUtils.generateId("LWW_ROLEMENU_ID");
+    }
+
 }

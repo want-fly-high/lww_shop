@@ -11,6 +11,10 @@ import com.cmpay.lww.entity.UserRoleDO;
 import com.cmpay.lww.entity.UserRoleDOKey;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface IUserRoleDao extends BaseDao<UserRoleDO, UserRoleDOKey> {
+
+   int batchInsert(List<UserRoleDO> list);
 }

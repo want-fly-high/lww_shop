@@ -22,4 +22,6 @@ public interface IRoleDao extends BaseDao<RoleDO, RoleDOKey> {
     int deleteBatch(List<Long> list);
 
     RoleDO selectById(Long roleId);
+
+    List<RoleDO> selectByIdList(List<Long> list);
 }

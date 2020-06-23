@@ -13,9 +13,11 @@ import com.cmpay.lww.entity.RoleDO;
 import com.cmpay.lww.enums.MsgEnum;
 import com.cmpay.lww.service.RoleService;
 import com.cmpay.lww.utils.BeanConvertUtils;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class RoleController {
     @Resource
     private RoleService roleService;
     //批量删除角色
-    @PostMapping("/testDeleteRoleBatch")
+    @DeleteMapping("/deleteRoleBatch")
     public DefaultRspDTO<NoBody> testDeleteBatch(@RequestBody RoleDelDTO roleDelDTO){
         roleService.deleteBatch(roleDelDTO.getRoleIds());
         return DefaultRspDTO.newSuccessInstance();
@@ -100,4 +102,12 @@ public class RoleController {
         roleService.deleteById(id);
         return DefaultRspDTO.newSuccessInstance();
     }
+
+    @GetMapping("/info/getByUserId/{userId}")
+    public List<RoleInfoDTO> getByUserId(@PathVariable Long userId){
+        List<RoleInfoBO> roleInfoByUserId = roleService.getRoleInfoByUserId(userId);
+        List<RoleInfoDTO> roleInfoDTOS = BeanConvertUtils.convertList(roleInfoByUserId, RoleInfoDTO.class);
+        return roleInfoDTOS;
+    }
+
 }

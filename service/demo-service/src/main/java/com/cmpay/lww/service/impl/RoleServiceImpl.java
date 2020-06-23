@@ -2,6 +2,7 @@ package com.cmpay.lww.service.impl;
 
 import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
+import com.cmpay.lemon.framework.cache.redis.RedisCacheable;
 import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.lemon.framework.utils.PageUtils;
 import com.cmpay.lww.bo.RoleInfoBO;
@@ -9,16 +10,20 @@ import com.cmpay.lww.bo.RoleInfoQueryBO;
 import com.cmpay.lww.bo.RoleInsertBO;
 import com.cmpay.lww.bo.UserInfoBO;
 import com.cmpay.lww.dao.IRoleDao;
+import com.cmpay.lww.dao.IUserRoleDao;
 import com.cmpay.lww.entity.RoleDO;
+import com.cmpay.lww.entity.UserRoleDO;
 import com.cmpay.lww.entity.UsersDO;
 import com.cmpay.lww.enums.MsgEnum;
 import com.cmpay.lww.service.RoleService;
+import com.cmpay.lww.utils.BeanConvertUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +35,8 @@ import java.util.Random;
 public class RoleServiceImpl implements RoleService {
     @Resource
     private IRoleDao roleDao;
-
+    @Resource
+    private IUserRoleDao iUserRoleDao;
     /**
      * 进行批量删除根据id的数组
      * @param roleIds
@@ -123,6 +129,27 @@ public class RoleServiceImpl implements RoleService {
             BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
         }
     }
-
+    /**
+     * 根据用户id获取角色信息
+     * @param userId
+     * @return
+     */
+    @Override
+    @RedisCacheable("CACHE_ALL_MENU" )
+    public List<RoleInfoBO> getRoleInfoByUserId(Long userId) {
+        UserRoleDO userRoleDO = new UserRoleDO();
+        userRoleDO.setUserId(userId);
+        List<UserRoleDO> list = iUserRoleDao.find(userRoleDO);
+        List<Long> idList = new ArrayList<>();
+        list.stream().forEach(item->{
+            idList.add(item.getRoleId());
+        });
+        List<RoleDO> roleDOS = new ArrayList<>();
+        if (idList.size()>0) {
+            roleDOS = roleDao.selectByIdList(idList);
+        }
+        List<RoleInfoBO> roleInfoBOS = BeanConvertUtils.convertList(roleDOS, RoleInfoBO.class);
+        return roleInfoBOS;
+    }
 
 }

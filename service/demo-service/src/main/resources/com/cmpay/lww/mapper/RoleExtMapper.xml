@@ -44,4 +44,13 @@
         from role
         where id=#{roleId}
     </select>
+
+    <select id="selectByIdList" parameterType="list" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from role
+        where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach> and is_user=0
+    </select>
 </mapper>

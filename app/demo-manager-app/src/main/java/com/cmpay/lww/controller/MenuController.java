@@ -5,9 +5,7 @@ import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
 import com.cmpay.lww.bo.MenuInfoBO;
 import com.cmpay.lww.bo.RoleMenuInsertBO;
-import com.cmpay.lww.dto.MenuAddReqDTO;
-import com.cmpay.lww.dto.MenuUpdateReqDTO;
-import com.cmpay.lww.dto.RoleMenuAddDTO;
+import com.cmpay.lww.dto.*;
 import com.cmpay.lww.entity.MenuDO;
 import com.cmpay.lww.service.MenuService;
 import org.springframework.web.bind.annotation.*;
@@ -76,7 +74,23 @@ public class MenuController {
         return DefaultRspDTO.newSuccessInstance();
     }
 
+
+    @GetMapping("/info/{id}")
+    public DefaultRspDTO<MenuInfoGetDTO> getMenuInfoById(@PathVariable Long id){
+        MenuInfoBO menuInfoBO = new MenuInfoBO();
+        menuInfoBO.setId(id);
+        MenuInfoBO roleInfoById = menuService.getRoleInfoById(menuInfoBO);
+        MenuInfoGetDTO menuInfoGetDTO = new MenuInfoGetDTO();
+        BeanUtils.copyProperties(menuInfoGetDTO, roleInfoById);
+        return DefaultRspDTO.newSuccessInstance(menuInfoGetDTO);
+    }
+
     /**
      * 根据角色获取菜单
      */
+    @GetMapping("/info/getMenuByRoleId/{id}")
+    public List<MenuInfoBO> getMenuByRoleId(@PathVariable Long id){
+        List<MenuInfoBO> menuInfoByRoleId = menuService.getMenuInfoByRoleId(id);
+        return menuInfoByRoleId;
+    }
 }

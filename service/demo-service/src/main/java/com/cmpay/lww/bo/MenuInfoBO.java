@@ -50,6 +50,8 @@ public class MenuInfoBO {
     /**
      * @Fields createDate 创建时间
      */
+    private boolean selected;
+
     private LocalDateTime createDate;
     /**
      * @Fields updateDate 更新时间

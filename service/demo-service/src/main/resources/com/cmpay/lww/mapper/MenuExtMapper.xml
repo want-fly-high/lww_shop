@@ -55,4 +55,10 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="long">
+        select <include refid="Base_Column_List"/>
+        from menu
+        where id=#{menuId}
+    </select>
 </mapper>

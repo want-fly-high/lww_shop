@@ -6,6 +6,7 @@ import com.cmpay.lww.entity.RoleDO;
 import com.cmpay.lww.entity.UsersDO;
 
 import javax.management.relation.Role;
+import java.util.List;
 
 /**
  * 角色服务类
@@ -28,4 +29,7 @@ public interface RoleService {
 
     //根据id删除角色
     void deleteById(Long id);
+
+    //根据用户ID获取角色信息
+    List<RoleInfoBO> getRoleInfoByUserId(Long userId);
 }

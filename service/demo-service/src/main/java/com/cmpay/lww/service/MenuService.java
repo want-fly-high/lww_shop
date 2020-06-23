@@ -1,6 +1,7 @@
 package com.cmpay.lww.service;
 
 import com.cmpay.lww.bo.MenuInfoBO;
+import com.cmpay.lww.bo.RoleInfoBO;
 import com.cmpay.lww.bo.RoleMenuInsertBO;
 import com.cmpay.lww.entity.MenuDO;
 
@@ -30,6 +31,10 @@ public interface MenuService {
     //修改菜单 根据id
     void updateMenu(MenuInfoBO menuInfoBO);
 
+    //根据id获取菜单
+    MenuInfoBO getRoleInfoById(MenuInfoBO menuInfoBO);
 
+    //根据角色id获取菜单
+    List<MenuInfoBO> getMenuInfoByRoleId(Long roleId);
 
 }

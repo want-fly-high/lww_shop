@@ -10,6 +10,11 @@ public class UserInfoDTO {
      * @Fields id 用户id
      */
     private Long id;
+
+    /**
+     * @Fields username 用户唯一标识
+     */
+    private String uid;
     /**
      * @Fields username 用户名
      */

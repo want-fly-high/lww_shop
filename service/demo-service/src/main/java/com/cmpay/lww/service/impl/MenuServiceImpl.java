@@ -2,8 +2,7 @@ package com.cmpay.lww.service.impl;
 
 import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
-import com.cmpay.lemon.framework.utils.IdGenUtils;
-import com.cmpay.lemon.framework.utils.LemonUtils;
+import com.cmpay.lemon.framework.cache.redis.RedisCacheable;
 import com.cmpay.lww.bo.MenuInfoBO;
 import com.cmpay.lww.bo.RoleMenuInsertBO;
 import com.cmpay.lww.dao.IMenuDao;
@@ -12,6 +11,7 @@ import com.cmpay.lww.entity.MenuDO;
 import com.cmpay.lww.entity.RoleMenuDO;
 import com.cmpay.lww.enums.MsgEnum;
 import com.cmpay.lww.service.MenuService;
+import com.cmpay.lww.utils.BeanConvertUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  *  菜单 服务实现类
@@ -75,20 +74,21 @@ public class MenuServiceImpl implements MenuService {
      * @return
      */
     @Override
-public List<MenuInfoBO> queryAllMenu(){
-    //查询所有数据
-    List<MenuDO> menuList = iMenuDao.find(null);
-    //把查询到的DO转换为BO
-    List<MenuInfoBO> menuInfoList = new ArrayList<>();
-    for (MenuDO menuDO : menuList){
-        MenuInfoBO menuInfoBO = new MenuInfoBO();
-        BeanUtils.copy(menuInfoBO,menuDO);
-        menuInfoList.add(menuInfoBO);
+
+    public List<MenuInfoBO> queryAllMenu(){
+        //查询所有数据
+        List<MenuDO> menuList = iMenuDao.find(null);
+        //把查询到的DO转换为BO
+        List<MenuInfoBO> menuInfoList = new ArrayList<>();
+        for (MenuDO menuDO : menuList){
+            MenuInfoBO menuInfoBO = new MenuInfoBO();
+            BeanUtils.copy(menuInfoBO,menuDO);
+            menuInfoList.add(menuInfoBO);
+        }
+        //把查询到的菜单list按照树形结构进行封装
+        List<MenuInfoBO> resultList = buildMenu(menuInfoList);
+        return resultList;
     }
-    //把查询到的菜单list按照树形结构进行封装
-    List<MenuInfoBO> resultList = buildMenu(menuInfoList);
-    return resultList;
-}
 
     /**
      * //把返回所有菜单list集合进行封装的方法
@@ -195,4 +195,41 @@ public List<MenuInfoBO> queryAllMenu(){
             BusinessException.throwBusinessException(MsgEnum.DB_UPDATE_FAILED);
         }
     }
+
+    /**
+     * 根据id获取菜单信息
+     * @param menuInfoBO
+     * @return
+     */
+    @Override
+    public MenuInfoBO getRoleInfoById(MenuInfoBO menuInfoBO) {
+        MenuDO menuDO = iMenuDao.selectById(menuInfoBO.getId());
+        BeanUtils.copyProperties(menuInfoBO, menuDO);
+        return menuInfoBO;
+    }
+
+    /**
+     * 根据roleId获取菜单信息
+     * @param roleId
+     * @return
+     */
+    @Override
+   public List<MenuInfoBO> getMenuInfoByRoleId(Long roleId){
+       List<MenuDO> menuDOS = iMenuDao.find(null);//获取所有菜单
+       List<MenuInfoBO> menuInfoBOS = BeanConvertUtils.convertList(menuDOS, MenuInfoBO.class);
+       RoleMenuDO roleMenuDO = new RoleMenuDO();
+       roleMenuDO.setRoleId(roleId);
+       List<RoleMenuDO> roleMenuDOS = iRoleMenuDao.find(roleMenuDO);
+       for (int m=0; m<menuInfoBOS.size(); m++){
+           MenuInfoBO menuInfoBO = menuInfoBOS.get(m);
+           for (int n=0; n<roleMenuDOS.size(); n++){
+               RoleMenuDO roleMenuDO1 = roleMenuDOS.get(n);
+               if (menuInfoBO.getId().equals(roleMenuDO1.getMenuId())){
+                   menuInfoBO.setSelected(true);
+               }
+           }
+       }
+       List<MenuInfoBO> buildMenu = buildMenu(menuInfoBOS);
+       return buildMenu;
+   }
 }

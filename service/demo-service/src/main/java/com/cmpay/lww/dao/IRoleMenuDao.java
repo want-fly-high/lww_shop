@@ -16,5 +16,5 @@ import java.util.List;
 @Mapper
 public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
     //根据list进行批量插入
-    void batchInsert(List<RoleMenuDO> list);
+    int batchInsert(List<RoleMenuDO> list);
 }

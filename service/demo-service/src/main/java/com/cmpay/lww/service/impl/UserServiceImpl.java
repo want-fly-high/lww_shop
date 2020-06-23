@@ -4,10 +4,7 @@ import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
 import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.lemon.framework.utils.PageUtils;
-import com.cmpay.lww.bo.UserInfoBO;
-import com.cmpay.lww.bo.UserInfoQueryBO;
-import com.cmpay.lww.bo.UserInsertBO;
-import com.cmpay.lww.bo.UserRoleInsertBO;
+import com.cmpay.lww.bo.*;
 import com.cmpay.lww.dao.IUserRoleDao;
 import com.cmpay.lww.dao.IUsersDao;
 import com.cmpay.lww.entity.UserRoleDO;
@@ -21,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +32,6 @@ public class UserServiceImpl implements UserService {
     private IUsersDao iUsersDao;
     @Resource
     private IUserRoleDao iUserRoleDao;
-
     /**
      * 根据用户id数组批量删除用户
      * @param userIds
@@ -55,16 +52,23 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public boolean saveUserRoleRalation(UserRoleInsertBO userRoleInsertBO) {
-        UserRoleDO userRoleDO = new UserRoleDO();
-        userRoleDO.setRoleId(userRoleInsertBO.getRoleId());
-        userRoleDO.setUserId(userRoleInsertBO.getUserId());
-        userRoleDO.setId(new Random().nextLong());
-        userRoleDO.setCreateDate(LocalDateTime.now());
-        userRoleDO.setUpdateDate(LocalDateTime.now());
-        userRoleDO.setIsUse(0);
-        int insert = iUserRoleDao.insert(userRoleDO);
-        return insert>0?true:false;
+    public void saveUserRoleRalation(UserRoleInsertBO userRoleInsertBO) {
+        List<UserRoleDO> list = new ArrayList<>();
+        for (int i=0; i<userRoleInsertBO.getRoleId().size(); i++){
+            UserRoleDO userRoleDO = new UserRoleDO();
+            userRoleDO.setUserId(userRoleInsertBO.getUserId());
+            userRoleDO.setRoleId(userRoleInsertBO.getRoleId().get(i));
+            userRoleDO.setId(new Random().nextLong());
+            userRoleDO.setCreateDate(LocalDateTime.now());
+            userRoleDO.setUpdateDate(LocalDateTime.now());
+            userRoleDO.setIsUse(0);
+            list.add(userRoleDO);
+        }
+
+        int res = iUserRoleDao.batchInsert(list);
+        if (res <= 1){
+            BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
+        }
     }
 
     /**
@@ -142,5 +146,19 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    /**
+     * 用户登录
+     * @param userInfoBO
+     * @return
+     */
+    @Override
+    public UserInfoBO login(UserInfoBO userInfoBO) {
+        userInfoBO.setId(1L);
+        userInfoBO.setUsername("aaaa");
+        return userInfoBO;
+    }
+
+
 
 }

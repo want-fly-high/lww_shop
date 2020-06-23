@@ -4,6 +4,7 @@
 
     <resultMap id="BaseResultMap" type="com.cmpay.lww.entity.UsersDO" >
         <result column="id" property="id" jdbcType="BIGINT" />
+        <result column="uid" property="uid" jdbcType="VARCHAR"/>
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="CHAR" />
@@ -17,6 +18,9 @@
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
                 id,
+            </if>
+            <if test="uid != null" >
+                uid,
             </if>
             <if test="username != null" >
                 username,
@@ -40,6 +44,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
                 #{id,jdbcType=BIGINT},
+            </if>
+            <if test="uid != null" >
+                #{uid,jdbcType=VARCHAR},
             </if>
             <if test="username != null" >
                 #{username,jdbcType=VARCHAR},
@@ -69,6 +76,9 @@
         <where >
             <if test="id != null" >
                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="uid != null" >
+                and uid = #{uid,jdbcType=VARCHAR}
             </if>
             <if test="username != null" >
                 and username = #{username,jdbcType=VARCHAR}

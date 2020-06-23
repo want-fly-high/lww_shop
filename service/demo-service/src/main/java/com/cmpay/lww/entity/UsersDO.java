@@ -15,6 +15,12 @@ public class UsersDO extends BaseDO {
      * @Fields id 用户id
      */
     private Long id;
+
+    /**
+     * @Fields username 用户唯一标识
+     */
+    private String uid;
+
     /**
      * @Fields username 用户名
      */
@@ -48,6 +54,13 @@ public class UsersDO extends BaseDO {
         this.id = id;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getUsername() {
         return username;
     }
