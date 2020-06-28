@@ -55,6 +55,14 @@ public class MenuDO extends BaseDO {
      * @Fields updateDate 更新时间
      */
     private LocalDateTime updateDate;
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long createBy;
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long updateBy;
 
     public Long getId() {
         return id;
@@ -142,5 +150,21 @@ public class MenuDO extends BaseDO {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
     }
 }

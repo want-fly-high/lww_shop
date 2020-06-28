@@ -26,7 +26,12 @@ import java.util.List;
 public class RoleController {
     @Resource
     private RoleService roleService;
-    //批量删除角色
+
+    /**
+     * 批量删除角色
+     * @param roleDelDTO
+     * @return
+     */
     @DeleteMapping("/deleteRoleBatch")
     public DefaultRspDTO<NoBody> testDeleteBatch(@RequestBody RoleDelDTO roleDelDTO){
         roleService.deleteBatch(roleDelDTO.getRoleIds());
@@ -103,6 +108,11 @@ public class RoleController {
         return DefaultRspDTO.newSuccessInstance();
     }
 
+    /**
+     * 根据用户id获取角色信息
+     * @param userId
+     * @return
+     */
     @GetMapping("/info/getByUserId/{userId}")
     public List<RoleInfoDTO> getByUserId(@PathVariable Long userId){
         List<RoleInfoBO> roleInfoByUserId = roleService.getRoleInfoByUserId(userId);

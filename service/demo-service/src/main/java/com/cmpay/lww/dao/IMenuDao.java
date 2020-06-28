@@ -15,15 +15,31 @@ import java.util.List;
 
 @Mapper
 public interface IMenuDao extends BaseDao<MenuDO, Long> {
+    /**
+     * 根据条件查询菜单
+     * @return
+     */
     List<MenuDO> selectByCondition();
 
-    //根据id进行更新
+    /**
+     * 根据id进行更新
+     * @param menuDO
+     * @return
+     */
     int updateById(MenuDO menuDO);
 
-    //批量删除菜单
+    /**
+     * 批量删除菜单
+     * @param list
+     * @return
+     */
     int deleteBatch(List<Long> list);
 
-    //根据id得到用户信息
+    /**
+     * 根据id等到菜单信息
+     * @param menuId
+     * @return
+     */
     MenuDO selectById(Long menuId);
 
 }

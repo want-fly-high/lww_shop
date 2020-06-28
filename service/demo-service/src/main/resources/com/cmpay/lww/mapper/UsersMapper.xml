@@ -4,12 +4,17 @@
 
     <resultMap id="BaseResultMap" type="com.cmpay.lww.entity.UsersDO" >
         <result column="id" property="id" jdbcType="BIGINT" />
-        <result column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="uid" property="uid" jdbcType="VARCHAR" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="CHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="INTEGER" />
         <result column="is_use" property="isUse" jdbcType="INTEGER" />
     </resultMap>
 
@@ -28,14 +33,29 @@
             <if test="password != null" >
                 password,
             </if>
+            <if test="name != null" >
+                name,
+            </if>
             <if test="phone != null" >
                 phone,
+            </if>
+            <if test="email != null" >
+                email,
             </if>
             <if test="createDate != null" >
                 create_date,
             </if>
+            <if test="createBy != null" >
+                create_by,
+            </if>
             <if test="updateDate != null" >
                 update_date,
+            </if>
+            <if test="updateBy != null" >
+                update_by,
+            </if>
+            <if test="status != null" >
+                status,
             </if>
             <if test="isUse != null" >
                 is_use,
@@ -54,14 +74,29 @@
             <if test="password != null" >
                 #{password,jdbcType=VARCHAR},
             </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
             <if test="phone != null" >
                 #{phone,jdbcType=CHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
             </if>
             <if test="createDate != null" >
                 #{createDate,jdbcType=TIMESTAMP},
             </if>
+            <if test="createBy != null" >
+                #{createBy,jdbcType=BIGINT},
+            </if>
             <if test="updateDate != null" >
                 #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null" >
+                #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
             </if>
             <if test="isUse != null" >
                 #{isUse,jdbcType=INTEGER},
@@ -86,14 +121,29 @@
             <if test="password != null" >
                 and password = #{password,jdbcType=VARCHAR}
             </if>
+            <if test="name != null" >
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
             <if test="phone != null" >
                 and phone = #{phone,jdbcType=CHAR}
+            </if>
+            <if test="email != null" >
+                and email = #{email,jdbcType=VARCHAR}
             </if>
             <if test="createDate != null" >
                 and create_date = #{createDate,jdbcType=TIMESTAMP}
             </if>
+            <if test="createBy != null" >
+                and create_by = #{createBy,jdbcType=BIGINT}
+            </if>
             <if test="updateDate != null" >
                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null" >
+                and update_by = #{updateBy,jdbcType=BIGINT}
+            </if>
+            <if test="status != null" >
+                and status = #{status,jdbcType=INTEGER}
             </if>
             <if test="isUse != null" >
                 and is_use = #{isUse,jdbcType=INTEGER}

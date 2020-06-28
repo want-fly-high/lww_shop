@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Optional;
 
 /**
- *li_hq
+ *登录设置
  */
 @Configuration
 public class LoginConfiguration {

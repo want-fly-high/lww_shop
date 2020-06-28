@@ -34,7 +34,7 @@ public class MenuController {
      * @return
      */
     @GetMapping("/testGetAll")
-    public List<MenuInfoBO> testGetAll(){
+    public List<MenuInfoDTO> testGetAll(){
         return menuService.queryAllMenu();
     }
 
@@ -74,7 +74,11 @@ public class MenuController {
         return DefaultRspDTO.newSuccessInstance();
     }
 
-
+    /**
+     * 根据菜单id获取菜单信息
+     * @param id
+     * @return
+     */
     @GetMapping("/info/{id}")
     public DefaultRspDTO<MenuInfoGetDTO> getMenuInfoById(@PathVariable Long id){
         MenuInfoBO menuInfoBO = new MenuInfoBO();
@@ -89,8 +93,8 @@ public class MenuController {
      * 根据角色获取菜单
      */
     @GetMapping("/info/getMenuByRoleId/{id}")
-    public List<MenuInfoBO> getMenuByRoleId(@PathVariable Long id){
-        List<MenuInfoBO> menuInfoByRoleId = menuService.getMenuInfoByRoleId(id);
+    public List<MenuInfoDTO> getMenuByRoleId(@PathVariable Long id){
+        List<MenuInfoDTO> menuInfoByRoleId = menuService.getMenuInfoByRoleId(id);
         return menuInfoByRoleId;
     }
 }

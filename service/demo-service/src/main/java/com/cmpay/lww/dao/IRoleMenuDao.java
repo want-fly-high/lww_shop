@@ -8,13 +8,16 @@ package com.cmpay.lww.dao;
 
 import com.cmpay.lemon.framework.dao.BaseDao;
 import com.cmpay.lww.entity.RoleMenuDO;
-import com.cmpay.lww.entity.RoleMenuDOKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
-    //根据list进行批量插入
+    /**
+     * 根据list进行批量插入
+     * @param list
+     * @return
+     */
     int batchInsert(List<RoleMenuDO> list);
 }

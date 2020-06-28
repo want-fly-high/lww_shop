@@ -47,16 +47,23 @@ public class MenuInfoBO {
      * @Fields isUse 是否逻辑删除 0未删除,1已删除
      */
     private Integer isUse;
+    private boolean selected;
     /**
      * @Fields createDate 创建时间
      */
-    private boolean selected;
-
     private LocalDateTime createDate;
     /**
      * @Fields updateDate 更新时间
      */
     private LocalDateTime updateDate;
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long createBy;
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long updateBy;
 
     /**
      * @Fields level 层级

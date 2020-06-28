@@ -47,7 +47,14 @@ public class RoleMenuDO extends BaseDO {
      * @Fields updateDate 更新时间
      */
     private LocalDateTime updateDate;
-
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long createBy;
+    /**
+     * @Fields updateBy 更新人
+     */
+    private Long updateBy;
     public Long getId() {
         return id;
     }

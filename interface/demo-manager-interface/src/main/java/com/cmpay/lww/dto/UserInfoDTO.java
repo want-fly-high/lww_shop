@@ -12,13 +12,22 @@ public class UserInfoDTO {
     private Long id;
 
     /**
-     * @Fields username 用户唯一标识
-     */
-    private String uid;
-    /**
      * @Fields username 用户名
      */
     private String username;
+    /**
+     * @Fields name 用户名字
+     */
+    private String name;
+
+    /**
+     * @Fields email 邮箱
+     */
+    private String email;
+    /**
+     * @Fields status 用户状态0正常 2禁用
+     */
+    private Integer status;
     /**
      * @Fields password 密码
      */

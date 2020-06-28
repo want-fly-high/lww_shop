@@ -46,4 +46,13 @@ public class RoleInfoQueryBO {
      */
     private LocalDateTime updateDate;
 
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long createBy;
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long updateBy;
+
 }

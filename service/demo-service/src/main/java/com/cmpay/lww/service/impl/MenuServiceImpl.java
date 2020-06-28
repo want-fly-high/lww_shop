@@ -7,6 +7,7 @@ import com.cmpay.lww.bo.MenuInfoBO;
 import com.cmpay.lww.bo.RoleMenuInsertBO;
 import com.cmpay.lww.dao.IMenuDao;
 import com.cmpay.lww.dao.IRoleMenuDao;
+import com.cmpay.lww.dto.MenuInfoDTO;
 import com.cmpay.lww.entity.MenuDO;
 import com.cmpay.lww.entity.RoleMenuDO;
 import com.cmpay.lww.enums.MsgEnum;
@@ -75,18 +76,18 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
 
-    public List<MenuInfoBO> queryAllMenu(){
+    public List<MenuInfoDTO> queryAllMenu(){
         //查询所有数据
         List<MenuDO> menuList = iMenuDao.find(null);
         //把查询到的DO转换为BO
-        List<MenuInfoBO> menuInfoList = new ArrayList<>();
+        List<MenuInfoDTO> menuInfoList = new ArrayList<>();
         for (MenuDO menuDO : menuList){
-            MenuInfoBO menuInfoBO = new MenuInfoBO();
+            MenuInfoDTO menuInfoBO = new MenuInfoDTO();
             BeanUtils.copy(menuInfoBO,menuDO);
             menuInfoList.add(menuInfoBO);
         }
         //把查询到的菜单list按照树形结构进行封装
-        List<MenuInfoBO> resultList = buildMenu(menuInfoList);
+        List<MenuInfoDTO> resultList = buildMenu(menuInfoList);
         return resultList;
     }
 
@@ -95,10 +96,10 @@ public class MenuServiceImpl implements MenuService {
      * @param menuList
      * @return
      */
-    private List<MenuInfoBO> buildMenu(List<MenuInfoBO> menuList) {
+    private List<MenuInfoDTO> buildMenu(List<MenuInfoDTO> menuList) {
         //最终返回的list集合
-        List<MenuInfoBO> finalNode = new ArrayList<>();
-        for (MenuInfoBO menuInfoNode : menuList){
+        List<MenuInfoDTO> finalNode = new ArrayList<>();
+        for (MenuInfoDTO menuInfoNode : menuList){
             //得到顶层pid=0的递归入口
             if(menuInfoNode.getPid().equals(0L)){
                 //顶层等级为1
@@ -116,10 +117,10 @@ public class MenuServiceImpl implements MenuService {
      * @param menuList
      * @return
      */
-    private MenuInfoBO selectChildren(MenuInfoBO menuInfoNode, List<MenuInfoBO> menuList) {
+    private MenuInfoDTO selectChildren(MenuInfoDTO menuInfoNode, List<MenuInfoDTO> menuList) {
         //因为向一层里面放二层，二层放三层，把对象初始话  防止出现空指针异常
         menuInfoNode.setChildren(new ArrayList<>());
-        for(MenuInfoBO it : menuList){
+        for(MenuInfoDTO it : menuList){
             //判断id和pid是否相等
             if(menuInfoNode.getId().equals(it.getPid())){
                 //如果相等 子菜单等级等于父菜单等级+1
@@ -127,7 +128,7 @@ public class MenuServiceImpl implements MenuService {
                 it.setLevel(level);
                 //所有children为空，进行初始话操作
                 if(menuInfoNode.getChildren() == null){
-                    menuInfoNode.setChildren(new ArrayList<MenuInfoBO>());
+                    menuInfoNode.setChildren(new ArrayList<MenuInfoDTO>());
                 }
                 //把查询出来的子菜单放到父菜单中
                 menuInfoNode.getChildren().add(selectChildren(it,menuList));
@@ -214,14 +215,14 @@ public class MenuServiceImpl implements MenuService {
      * @return
      */
     @Override
-   public List<MenuInfoBO> getMenuInfoByRoleId(Long roleId){
+   public List<MenuInfoDTO> getMenuInfoByRoleId(Long roleId){
        List<MenuDO> menuDOS = iMenuDao.find(null);//获取所有菜单
-       List<MenuInfoBO> menuInfoBOS = BeanConvertUtils.convertList(menuDOS, MenuInfoBO.class);
+       List<MenuInfoDTO> menuInfoBOS = BeanConvertUtils.convertList(menuDOS, MenuInfoDTO.class);
        RoleMenuDO roleMenuDO = new RoleMenuDO();
        roleMenuDO.setRoleId(roleId);
        List<RoleMenuDO> roleMenuDOS = iRoleMenuDao.find(roleMenuDO);
        for (int m=0; m<menuInfoBOS.size(); m++){
-           MenuInfoBO menuInfoBO = menuInfoBOS.get(m);
+           MenuInfoDTO menuInfoBO = menuInfoBOS.get(m);
            for (int n=0; n<roleMenuDOS.size(); n++){
                RoleMenuDO roleMenuDO1 = roleMenuDOS.get(n);
                if (menuInfoBO.getId().equals(roleMenuDO1.getMenuId())){
@@ -229,7 +230,7 @@ public class MenuServiceImpl implements MenuService {
                }
            }
        }
-       List<MenuInfoBO> buildMenu = buildMenu(menuInfoBOS);
+       List<MenuInfoDTO> buildMenu = buildMenu(menuInfoBOS);
        return buildMenu;
    }
 }

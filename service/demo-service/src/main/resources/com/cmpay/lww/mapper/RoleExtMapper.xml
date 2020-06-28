@@ -4,7 +4,7 @@
 
 
     <sql id="Base_Column_List" >
-        id, role_name, role_code, remark, is_use, create_date, update_date
+        id, role_name, role_code, remark, is_use, create_date, update_date, create_by, update_by
     </sql>
     <update id="updateById" parameterType="com.cmpay.lww.entity.RoleDO">
         update role
@@ -26,6 +26,12 @@
             </if>
             <if test="updateDate != null" >
                 update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null" >
+                create_by=#{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateBy != null" >
+                update_by=#{updateBy,jdbcType=BIGINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

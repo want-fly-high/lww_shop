@@ -1,6 +1,5 @@
 package com.cmpay.lww.dto;
 
-import com.cmpay.lww.bo.MenuInfoBO;
 import lombok.Data;
 
 import java.util.List;
@@ -30,9 +29,12 @@ public class MenuInfoDTO {
      * @Fields level 层级
      */
     private Integer level;
-
+    /**
+     * @Fields selected 是否被选择
+     */
+    private boolean selected;
     /**
      * @Fields children 子节点
      */
-    private List<MenuInfoBO> children;
+    private List<MenuInfoDTO> children;
 }

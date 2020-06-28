@@ -9,6 +9,8 @@
         <result column="is_use" property="isUse" jdbcType="INTEGER" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
     </resultMap>
 
     <insert id="insert" parameterType="com.cmpay.lww.entity.UserRoleDO" >
@@ -32,6 +34,12 @@
             <if test="updateDate != null" >
                 update_date,
             </if>
+            <if test="createBy != null" >
+                create_by,
+            </if>
+            <if test="updateBy != null" >
+                update_by,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -51,6 +59,12 @@
             </if>
             <if test="updateDate != null" >
                 #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null" >
+                #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateBy != null" >
+                #{updateBy,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -77,6 +91,12 @@
             </if>
             <if test="updateDate != null" >
                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null" >
+                and create_by=#{createBy,jdbcType=BIGINT}
+            </if>
+            <if test="updateBy != null" >
+                and update_by=#{updateBy,jdbcType=BIGINT}
             </if>
         </where>
     </select>

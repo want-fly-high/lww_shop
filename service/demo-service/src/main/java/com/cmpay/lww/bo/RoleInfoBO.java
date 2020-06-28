@@ -35,4 +35,13 @@ public class RoleInfoBO {
      * @Fields updateDate 修改时间
      */
     private LocalDateTime updateDate;
+
+    /**
+     * @Fields createBy 创建人
+     */
+    private Long createBy;
+    /**
+     * @Fields createBy 修改人
+     */
+    private Long updateBy;
 }

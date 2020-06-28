@@ -4,7 +4,7 @@
 
 
     <sql id="Base_Column_List" >
-        id, pid, menu_name, type, munu_value, path, redirect, status, is_use
+        id, pid, menu_name, type, munu_value, path, redirect, status, is_use,create_by, update_by
         , create_date, update_date
     </sql>
     <!-- add -->
@@ -43,6 +43,12 @@
             </if>
             <if test="updateDate != null" >
                 update_date=#{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null" >
+                create_by=#{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateBy != null" >
+                update_by=#{updateBy,jdbcType=BIGINT},
             </if>
         </set>
          where id=#{id,jdbcType=BIGINT}
